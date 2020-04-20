@@ -34,6 +34,13 @@ $(document).ready(() => {
       Poster, Title, Genre, Plot,
     } = movieDetails;
 
+    // eslint-disable-next-line no-restricted-globals
+    const awards = movieDetails.Awards.split(' ').reduce((acc, val) => { if (isNaN(val)) { return acc; } return acc + val; }, 0);
+    const boxOfficeValue = parseInt(movieDetails.BoxOffice.replace(/\$/g, '').replace(/,/g, ''), 10);
+    const metaScore = parseInt(movieDetails.Metascore, 10);
+    const imdbRating = parseFloat(movieDetails.imdbRating);
+    const imdbVotes = parseInt(movieDetails.imdbVotes.replace(/,/g, ''), 10);
+
     return $(`
     <article class="media">
       <figure class="media-left">
@@ -49,33 +56,56 @@ $(document).ready(() => {
         </div>
       </div>
     </article>
-    <article class="notification is-primary">
+
+    <article data-value=${awards} class="notification is-primary">
       <p class="title">${movieDetails.Awards}</p>
       <p class="subtitle">Awards</p>
     </article>
-    <article class="notification is-primary">
+
+    <article data-value=${boxOfficeValue} class="notification is-primary">
       <p class="title">${movieDetails.BoxOffice}</p>
       <p class="subtitle">Box Office</p>
     </article>
-    <article class="notification is-primary">
+
+    <article data-value=${metaScore} class="notification is-primary">
       <p class="title">${movieDetails.Metascore}</p>
       <p class="subtitle">Metascore</p>
     </article>
-    <article class="notification is-primary">
+
+    <article data-value=${imdbRating} class="notification is-primary">
       <p class="title">${movieDetails.imdbRating}</p>
       <p class="subtitle">imdbRating</p>
     </article>
-    <article class="notification is-primary">
+
+    <article data-value=${imdbVotes} class="notification is-primary">
       <p class="title">${movieDetails.imdbVotes}</p>
       <p class="subtitle">imdbVotes</p>
     </article>
+
     `);
   };
 
   // Function to run comparisons between movies
   const runComparison = () => {
+    const $leftSideStats = $('#left-summary .notification');
+    const $rightSideStats = $('#right-summary .notification');
 
-  }
+    $leftSideStats.each(function (index) {
+      const leftStat = $(this);
+      const rightStat = $($rightSideStats[index]);
+
+      const leftVal = parseInt(leftStat.data('value'), 10);
+      const rightVal = parseInt(rightStat.data('value'), 10);
+
+      if (leftVal > rightVal) {
+        rightStat.removeClass('is-primary');
+        rightStat.addClass('is-warning');
+      } else if (leftVal < rightVal) {
+        leftStat.removeClass('is-primary');
+        leftStat.addClass('is-warning');
+      }
+    });
+  };
 
   // Get Movie Data
   let leftMovie;

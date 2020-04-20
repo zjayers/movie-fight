@@ -16,6 +16,7 @@ figure .image img {
 
 .notification {
   margin-top: 20px !important;
+  transition: all 0.5s;
 }
 
 .results {
