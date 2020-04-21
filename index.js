@@ -149,5 +149,4 @@ $(document).ready(() => {
       onMovieSelect(movie, $('#right-summary'), 'right');
     },
   });
-
 });
