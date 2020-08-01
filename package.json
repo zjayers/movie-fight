@@ -1,0 +1,30 @@
+{
+  "name": "movie-fight",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "homepage": "https://zjayers.github.io/movie-fight/",
+  "bugs": {
+    "url": "https://github.com/zjayers/movie-fight/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zjayers/movie-fight.git"
+  },
+  "license": "MIT",
+  "author": "Zach Ayers",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gh-pages -d ./"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "gh-pages": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=12.18.3",
+    "npm": ">=6.14.7"
+  }
+}
