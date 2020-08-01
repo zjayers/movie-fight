@@ -6,16 +6,16 @@ $(document).ready(() => {
   const autoCompleteConfig = {
     renderOption(movie) {
       return $(`
-      <img src="${movie.Poster === 'N/A' ? '' : movie.Poster}" alt="Poster" />
+      <img src="${movie.Poster === "N/A" ? "" : movie.Poster}" alt="Poster" />
       <p>${movie.Title} (${movie.Year})</p>`);
     },
     inputValue(movie) {
       return movie.Title;
     },
     async fetchData(searchTerm) {
-      const response = await axios.get('https://www.omdbapi.com/', {
+      const response = await axios.get("https://www.omdbapi.com/", {
         params: {
-          apikey: 'fcabcdc7',
+          apikey: "fcabcdc7",
           s: searchTerm,
         },
       });
@@ -30,16 +30,22 @@ $(document).ready(() => {
 
   // Create Movie Template HTML
   const createMovieTemplate = (movieDetails) => {
-    const {
-      Poster, Title, Genre, Plot,
-    } = movieDetails;
+    const { Poster, Title, Genre, Plot } = movieDetails;
 
     // eslint-disable-next-line no-restricted-globals
-    const awards = movieDetails.Awards.split(' ').reduce((acc, val) => { if (isNaN(val)) { return acc; } return acc + val; }, 0);
-    const boxOfficeValue = parseInt(movieDetails.BoxOffice.replace(/\$/g, '').replace(/,/g, ''), 10);
+    const awards = movieDetails.Awards.split(" ").reduce((acc, val) => {
+      if (isNaN(val)) {
+        return acc;
+      }
+      return acc + val;
+    }, 0);
+    const boxOfficeValue = parseInt(
+      movieDetails.BoxOffice.replace(/\$/g, "").replace(/,/g, ""),
+      10
+    );
     const metaScore = parseInt(movieDetails.Metascore, 10);
     const imdbRating = parseFloat(movieDetails.imdbRating);
-    const imdbVotes = parseInt(movieDetails.imdbVotes.replace(/,/g, ''), 10);
+    const imdbVotes = parseInt(movieDetails.imdbVotes.replace(/,/g, ""), 10);
 
     return $(`
     <article class="media">
@@ -87,22 +93,22 @@ $(document).ready(() => {
 
   // Function to run comparisons between movies
   const runComparison = () => {
-    const $leftSideStats = $('#left-summary .notification');
-    const $rightSideStats = $('#right-summary .notification');
+    const $leftSideStats = $("#left-summary .notification");
+    const $rightSideStats = $("#right-summary .notification");
 
     $leftSideStats.each(function (index) {
       const leftStat = $(this);
       const rightStat = $($rightSideStats[index]);
 
-      const leftVal = parseInt(leftStat.data('value'), 10);
-      const rightVal = parseInt(rightStat.data('value'), 10);
+      const leftVal = parseInt(leftStat.data("value"), 10);
+      const rightVal = parseInt(rightStat.data("value"), 10);
 
       if (leftVal > rightVal) {
-        rightStat.removeClass('is-primary');
-        rightStat.addClass('is-warning');
+        rightStat.removeClass("is-primary");
+        rightStat.addClass("is-warning");
       } else if (leftVal < rightVal) {
-        leftStat.removeClass('is-primary');
-        leftStat.addClass('is-warning');
+        leftStat.removeClass("is-primary");
+        leftStat.addClass("is-warning");
       }
     });
   };
@@ -111,15 +117,15 @@ $(document).ready(() => {
   let leftMovie;
   let rightMovie;
   const onMovieSelect = async (movie, $summaryElement, side) => {
-    const response = await axios.get('https://www.omdbapi.com/', {
+    const response = await axios.get("https://www.omdbapi.com/", {
       params: {
-        apikey: 'fcabcdc7',
+        apikey: "fcabcdc7",
         i: movie.imdbID,
       },
     });
     $summaryElement.html(createMovieTemplate(response.data));
 
-    if (side === 'left') {
+    if (side === "left") {
       leftMovie = response.data;
     } else {
       rightMovie = response.data;
@@ -133,20 +139,20 @@ $(document).ready(() => {
   // Left AutoComplete Box
   createAutoComplete({
     ...autoCompleteConfig,
-    $root: $('#left-autocomplete'),
+    $root: $("#left-autocomplete"),
     onOptionSelect(movie) {
-      $('.tutorial').addClass('is-hidden');
-      onMovieSelect(movie, $('#left-summary'), 'left');
+      $(".tutorial").addClass("is-hidden");
+      onMovieSelect(movie, $("#left-summary"), "left");
     },
   });
 
   // Right AutoComplete Box
   createAutoComplete({
     ...autoCompleteConfig,
-    $root: $('#right-autocomplete'),
+    $root: $("#right-autocomplete"),
     onOptionSelect(movie) {
-      $('.tutorial').addClass('is-hidden');
-      onMovieSelect(movie, $('#right-summary'), 'right');
+      $(".tutorial").addClass("is-hidden");
+      onMovieSelect(movie, $("#right-summary"), "right");
     },
   });
 });
